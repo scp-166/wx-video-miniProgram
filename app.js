@@ -11,6 +11,7 @@ App({
 
   registerUrl: "/register",
   loginUrl: "/login",
+  logoutUrl: "/logout",
   // 用户信息
   userInfo: null
 })

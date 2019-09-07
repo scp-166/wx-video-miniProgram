@@ -39,7 +39,13 @@ doLogin: function(e){
           myUtils.showSuccessToast("登录成功");
           // 保存后端返回的用户信息
           app.userInfo = e.data.data;
-          console.log(app.userInfo);
+          // 跳转 个人信息页
+          wx.navigateTo({
+            url: '../mine/mine',
+            success: function(res) {},
+            fail: function(res) {},
+            complete: function(res) {},
+          })
         } else {
           myUtils.showNoneToast(e.data.msg);
         }
