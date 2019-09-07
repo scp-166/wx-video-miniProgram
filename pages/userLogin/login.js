@@ -17,6 +17,8 @@ doLogin: function(e){
   if( value.username.length == 0 || value.password.length == 0){
     myUtils.showNoneToast("用户名或者密码不能为空");
   } else {
+    // 显示等待
+    myUtils.showLoading("请等待");
     wx.request({
       url: app.getTestRemoteUrlWithPort(app.loginUrl),
       method: "POST",
@@ -28,11 +30,13 @@ doLogin: function(e){
         "content-Type": "application/json" // 这是默认的
       },
       success: function(e){
-        console.log("success")
+        // 隐藏 loading
+        myUtils.hideLoading();
+
         let status = e.data.status;
-        console.log(e);
+
         if(status == 200){
-          myUtils.showNoneToast("登录成功");
+          myUtils.showSuccessToast("登录成功");
           // 保存后端返回的用户信息
           app.userInfo = e.data.data;
           console.log(app.userInfo);
@@ -43,11 +47,20 @@ doLogin: function(e){
       },
     
       fail: function(err){
+        // 隐藏 loading
+        myUtils.hideLoading();
+
         console.log("失败");
         console.log(err);
       }
     })
   }
+},
+
+goRegistPage: function(){
+  wx.navigateTo({
+    url: '../userRegist/regist',
+  })
 }
    
 })

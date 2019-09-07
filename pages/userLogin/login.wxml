@@ -26,7 +26,7 @@
             </view>
 
             <view>
-                <button class="goLoginBtn" type="warn" bindtap="goLoginPage">去注册</button>
+                <button class="goLoginBtn" type="warn" bindtap="goRegistPage">去注册</button>
             </view>
         </form>
     </view>
