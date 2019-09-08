@@ -17,6 +17,7 @@ App({
   loginUrl: "/login",
   logoutUrl: "/logout",
   uploadFaceUrl: "/operation/uploadFace",
+  userInfoUrl: "/operation/userInfo",
   // 用户信息
   userInfo: null
 })

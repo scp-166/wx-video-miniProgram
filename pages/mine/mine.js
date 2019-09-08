@@ -5,7 +5,60 @@ const app = getApp()
 Page({
   data: {
     faceUrl: "../resource/images/noneface.png",
+    nickname: "",
+    fansCounts: 0,
+    followCounts: 0,
+    receiveLikeCounts: 0
    
+  },
+
+/**
+ * 先加载用户信息
+ */
+  onLoad: function(ret){
+    let that = this;
+
+    let userInfo = app.userInfo;
+    if(userInfo == null){
+      myUtils.showNoneToast("请先登录!");
+      setTimeout(function(){
+        wx.redirectTo({
+          url: '../userLogin/login',
+          success: function (res) { },
+          fail: function (res) { },
+          complete: function (res) { },
+        });
+      }, 1000)
+      console.log("请先登录");
+      return;
+    }
+    // 获取数据
+    wx.request({
+      url: app.getTestRemoteUrlWithPort(app.userInfoUrl) + "?userId=" + userInfo.id,
+      method: "GET",
+      success: function(ret){
+        if(ret.data.status == 200){
+          myUtils.showSuccessToast("获取信息成功");
+          let data = ret.data.data;
+          let faceImage = "../resource/images/noneface.png";
+
+          if(data.faceImage != null && data.faceImage != "" && data.faceImage != undefined)          {
+            faceImage = app.getTestUrl() + data.faceImage;
+          }
+
+          that.setData({
+            faceUrl: faceImage,
+            nickname: data.nickname,
+            fansCounts: data.fansCounts,
+            followCounts: data.followCounts,
+            receiveLikeCounts: data.receiveLikeCounts
+          })
+        }
+      },
+      fail: function(err){
+        console.log(err);
+      }
+    })
   },
 
   logout: function(){
