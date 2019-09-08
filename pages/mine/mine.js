@@ -59,6 +59,53 @@ Page({
         console.log(err);
       }
     })
+  },
+
+  changeFace: function(e){
+    let that = this;
+    // https://developers.weixin.qq.com/miniprogram/dev/api/media/image/wx.chooseImage.html
+    wx.chooseImage({
+      count: 1,
+      // 图片尺寸 original:原图 compressed: 压缩
+      sizeType: ["compressed"],
+      success: function (res) {
+        console.log(res.tempFilePaths);
+        console.log(res.tempFiles);
+        myUtils.showLoading();
+        // https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html
+        // 注意，成功后的回调函数 ret.data 是 String，而不是 Object
+        wx.uploadFile({
+          url: app.getTestRemoteUrlWithPort(app.uploadFaceUrl),
+          filePath: res.tempFiles[0].path,
+          // 对应后端文件参数名
+          name: 'file',
+          formData:{
+            "userId": app.userInfo.id
+          },
+          success: function(ret){
+            myUtils.hideLoading();
+            // 和 wx.request 不同，wx.uploadFile 的 ret.data 是 String 而不是 Object
+            console.log(ret);
+            
+            let data = JSON.parse(ret.data);
+            console.log(data);
+            if(data.status == 200){
+              myUtils.showSuccessToast("上传成功");
+            
+              // 设置 头像 url
+              that.setData({
+                faceUrl: (app.getTestUrl() + data.data)
+              })
+            } else {
+              myUtils.showNoneToast(ret.data.msg);
+            }
+          },
+          fail: function(error){
+            console.log(error);
+          }
+        })
+      }
+    })
   }
 
 })
