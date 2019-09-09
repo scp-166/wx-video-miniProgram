@@ -1,0 +1,12 @@
+<view class='mp3'>
+  <!-- 动态url -->
+  <image src='/pages/resource/images/{{musicImage}}.png' class='musicImage' bindtap='display'></image>
+
+  <view class="musicInfo">
+    <view class='author'>{{author}}</view>
+    <view class='musicName'>{{name}}</view>
+  </view>
+
+  <view class='musicDuration'>{{musicDuration}}</view>
+
+</view>

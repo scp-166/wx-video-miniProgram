@@ -18,6 +18,8 @@ App({
   logoutUrl: "/logout",
   uploadFaceUrl: "/operation/uploadFace",
   userInfoUrl: "/operation/userInfo",
+  bgmListUrl: "/bgm/bgmList",
+  
   // 用户信息
   userInfo: null
 })

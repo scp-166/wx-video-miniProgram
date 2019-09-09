@@ -1,0 +1,43 @@
+.mp3{
+ background-color: ghostwhite;
+ height: 10%;
+ width: 90%;
+ border: 1rpx solid gray ;
+/* flex 布局 */
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+
+ padding: 20rpx;
+ margin-top: 10rpx;
+
+}
+
+.musicImage{
+  width: 80rpx;
+  height: 80rpx;
+
+  /* 作为 flex 标签的子元素的位置显示 */
+  align-self: center;
+}
+
+.musicInfo{
+  /* 作为 flex 标签的子元素的位置显示 */
+  align-self: center;
+}
+
+.musicInfo .author{
+  font-size: 30rpx;
+}
+
+.musicInfo .musicName{
+  font-size: 20rpx;
+  color: gray;
+
+}
+
+.musicDuration{
+  color: gray;
+  /* 作为 flex 标签的子元素的位置显示 */
+  align-self: center;
+}

@@ -1,0 +1,44 @@
+Page{
+  overflow: hidden;
+}
+.container2 {
+    display: flex;
+    justify-content: space-between;   
+    align-items: center;
+
+}
+
+.iaudio{
+  flex: 9;
+}
+
+.radio{
+  flex: 1;
+}
+
+.btn{
+  width: 80%;
+  margin-top: 100rpx;
+}
+
+.inputView{
+  margin-top: 20rpx;
+  background-color: white;
+  border: solid 1px whitesmoke;
+  line-height: 45px;
+  margin-bottom: 20rpx;
+}
+
+.inputView .inputLable{
+  float: left;
+  color: gray;
+  font-size: 15px;
+  width: 30%;
+  
+}
+
+.inputView .inputContent{
+  padding-top: 25rpx;
+  float: left;
+  font-size: 15px;
+}

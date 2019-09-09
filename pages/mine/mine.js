@@ -9,7 +9,6 @@ Page({
     fansCounts: 0,
     followCounts: 0,
     receiveLikeCounts: 0
-   
   },
 
 /**

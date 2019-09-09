@@ -1,0 +1,26 @@
+<!--pages/chooseBgm/chooseBgm.wxml-->
+<form bindsubmit='upload'>
+  <radio-group name="bgmId">
+    <block wx:for="{{musicList}}" wx:key="{{index}}"> 
+      <view class='container2'>
+        <view class='iaudio'>
+          <iaudio
+            path = "{{displayUrl}}{{item.path}}" 
+            author = "{{item.author}}" 
+            name = "{{item.name}}" 
+            musicDuration = "{{item.musicDuration}}" 
+          />
+        </view>
+        <radio class='radio'></radio>
+      </view>
+    </block>   
+  </radio-group>
+
+  <view  class='inputView'>
+    <label class='inputLable' for='inputContent'>视频描述</label>
+    <input placeholder='如果需要，请输入关于该视频的描述' class='inputContent' id='inputContent'></input>
+  </view>
+
+  <button type='primary' form-type='submit' class='btn'>提交</button>
+  <button type='warn' form-type='reset' class='btn'>重置</button>
+</form>
