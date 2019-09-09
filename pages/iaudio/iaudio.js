@@ -31,8 +31,6 @@ Component({
     // 设置播放地址
     mp3Obj.src = this.data.path;
 
-    console.log(this.data.path);
-
     // 设置MP3
     this.setData({
       mp3Obj: mp3Obj

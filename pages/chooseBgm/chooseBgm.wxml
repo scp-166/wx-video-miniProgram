@@ -11,14 +11,14 @@
             musicDuration = "{{item.musicDuration}}" 
           />
         </view>
-        <radio class='radio'></radio>
+        <radio class='radio' value="{{item.id}}"></radio>
       </view>
     </block>   
   </radio-group>
 
   <view  class='inputView'>
     <label class='inputLable' for='inputContent'>视频描述</label>
-    <input placeholder='如果需要，请输入关于该视频的描述' class='inputContent' id='inputContent'></input>
+    <input placeholder='如果需要，请输入关于该视频的描述' name="inputContent" class='inputContent' id='inputContent'></input>
   </view>
 
   <button type='primary' form-type='submit' class='btn'>提交</button>

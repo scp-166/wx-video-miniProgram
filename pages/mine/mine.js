@@ -166,7 +166,7 @@ Page({
   uploadVideo: function(){
     let that = this;
 
-    // 上传视频
+    // 选择视频，tx会自动存储该文件
     // https://developers.weixin.qq.com/miniprogram/dev/api/media/video/wx.chooseVideo.html
     wx.chooseVideo({
       sourceType: ["album"],
@@ -185,6 +185,14 @@ Page({
           let size = ret.size;
           let tempFilePath = ret.tempFilePath;
           let thumbTempFilePath = ret.thumbTempFilePath;
+          // 切换到 选择 音乐上传 页面
+          wx.navigateTo({
+            url: '/pages/chooseBgm/chooseBgm' + "?videoSeconds=" + duration
+              + "&videoWidth=" + width
+              + "&videoHeight=" + height
+              + "&tempFilePath=" + tempFilePath
+              + "&thumbTempFilePath=" + thumbTempFilePath
+          })
         }
 
        

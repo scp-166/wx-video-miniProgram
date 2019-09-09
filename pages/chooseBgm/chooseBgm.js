@@ -8,7 +8,8 @@ Page({
    */
   data: {
     displayUrl: app.getTestUrl(),
-    musicList:[]
+    musicList:[],
+    videoInfo:{}
   },
 
   /**
@@ -16,6 +17,11 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
+    // 将上个页面传来的 video 信息存储
+    that.setData({
+      videoInfo: options
+    })
+
     myUtils.showLoading();
 
     wx.request({
@@ -26,12 +32,10 @@ Page({
 
         if(ret.data.status == 200){
           let bgmList = ret.data.data;
-          console.log(bgmList);
           // 设置进去
           that.setData({
             musicList: bgmList
           })
-          console.log(that.data.musicList);
         }
       },
       fail: function(err){
@@ -39,6 +43,57 @@ Page({
         console.log(err);
       }
     })
+  },
+
+  /**
+   * 上传视频
+   */
+  upload: function(e){
+    let that = this;
+
+    let audioId = e.detail.value.bgmId;
+    let videoDesc = e.detail.value.inputContent;
+
+    let videoSeconds = that.data.videoInfo.videoSeconds;
+    let videoWidth = that.data.videoInfo.videoWidth;
+    let videoHeight = that.data.videoInfo.videoHeight;
+    let tempFilePath = that.data.videoInfo.tempFilePath;
+    let thumbTempFilePath = that.data.videoInfo.thumbTempFilePath;
+
+    myUtils.showLoading();
+    // 发送图片
+    wx.uploadFile({
+      url: app.getTestRemoteUrlWithPort(app.uploadVideoUrl),
+      method: "POST",
+      filePath: tempFilePath,
+      name: 'file', // 后端接受 file 的参数
+      formData: {
+        userId: app.userInfo.id,
+
+        audioId: audioId,
+        videoDesc: videoDesc,
+
+        videoSeconds: videoSeconds,
+        videoWidth: videoWidth,
+        videoHeight: videoHeight
+
+      },
+      success: function(ret){
+        myUtils.hideLoading();
+        let data = JSON.parse(ret.data);
+        if(data.status == 200){
+          myUtils.showSuccessToast(data.msg);
+        } else {
+          myUtils.showNoneToast(data.msg);
+        }
+      },
+      fail: function(err){
+        myUtils.hideLoading();
+        console.log(err);
+      }
+      
+    })
+
   },
 
   /**

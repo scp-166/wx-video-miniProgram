@@ -19,6 +19,7 @@ App({
   uploadFaceUrl: "/operation/uploadFace",
   userInfoUrl: "/operation/userInfo",
   bgmListUrl: "/bgm/bgmList",
+  uploadVideoUrl: "/video/uploadVideo",
   
   // 用户信息
   userInfo: null
