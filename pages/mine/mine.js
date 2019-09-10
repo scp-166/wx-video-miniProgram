@@ -137,7 +137,6 @@ Page({
           success: function(ret){
             myUtils.hideLoading();
             // 和 wx.request 不同，wx.uploadFile 的 ret.data 是 String 而不是 Object
-            console.log(ret);
             
             let data = JSON.parse(ret.data);
             console.log(data);

@@ -79,10 +79,32 @@ Page({
 
       },
       success: function(ret){
-        myUtils.hideLoading();
         let data = JSON.parse(ret.data);
         if(data.status == 200){
-          myUtils.showSuccessToast(data.msg);
+          let videoId = data.data;
+          // 上传视频缩略图
+          wx.uploadFile({
+            url: app.getTestRemoteUrlWithPort(app.uploadVideoCoverUrl),
+            filePath: thumbTempFilePath,
+            name: 'file',
+            formData:{
+              userId: app.userInfo.id,
+              videoId: videoId
+            },
+            success: function(ret){
+              myUtils.hideLoading();
+              let data = JSON.parse(ret.data);
+              if(data.status == 200){
+                myUtils.showSuccessToast("上传视频成功")
+                wx.navigateBack({
+                  // 回退一次
+                  delta: 1,
+                })
+              } else {
+                myUtils.showNoneToast(data.msg);
+              }
+            }
+          })
         } else {
           myUtils.showNoneToast(data.msg);
         }
