@@ -81,6 +81,8 @@ Page({
       success: function(ret){
         let data = JSON.parse(ret.data);
         if(data.status == 200){
+          /*
+          // 手机端无法获取缩略图，服务端进行存储
           let videoId = data.data;
           // 上传视频缩略图
           wx.uploadFile({
@@ -104,6 +106,11 @@ Page({
                 myUtils.showNoneToast(data.msg);
               }
             }
+          })
+          */
+          myUtils.showSuccessToast(data.msg);
+          wx.navigateBack({
+            delta: 1,
           })
         } else {
           myUtils.showNoneToast(data.msg);
