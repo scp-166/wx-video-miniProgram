@@ -21,6 +21,7 @@ App({
   bgmListUrl: "/bgm/bgmList",
   uploadVideoUrl: "/video/uploadVideo",
   uploadVideoCoverUrl: "/video/uploadVideoCover",
+  getAllVideoByPage: "/video/showVideo",
   
   // 用户信息
   userInfo: null
