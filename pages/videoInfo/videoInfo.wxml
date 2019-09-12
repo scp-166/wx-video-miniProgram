@@ -9,7 +9,7 @@ objectFit="contain"
 <cover-view id="outer">
   <cover-view id="header">
     <cover-image id="camera" src="../resource/images/camera.png" ></cover-image>
-    <cover-image id="search" src="../resource/images/search.png" ></cover-image>
+    <cover-image id="search" src="../resource/images/search.png" bindtap="showSearch"></cover-image>
   </cover-view>
   <cover-view id="middle">
       <cover-image id="authorFace"></cover-image>
