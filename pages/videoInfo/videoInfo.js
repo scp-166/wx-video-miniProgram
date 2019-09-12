@@ -1,19 +1,41 @@
 // pages/videoInfo/videoInfo.js
+var videoUtils = require("../../utils/videoUtils.js");
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    // 默认是支持竖向视频
+    mode: "cover",
+    videoItem: {},
+    serverUrl: app.getTestUrl(),
+    src:""
+  },
 
+  uploadVideo: function(){
+    videoUtils.uploadVideo();
   },
 
   // 存储 video 组件
   theVideo: {},
 
+  /**
+   * 跳转查询
+   */
   showSearch: function() {
     wx.navigateTo({
       url: '../searchVideo/searchVideo',
+    })
+  },
+
+  /**
+   * 跳转首页
+   */
+  showIndex: function(){
+    wx.redirectTo({
+      url: '../index/index',
     })
   },
 
@@ -24,6 +46,21 @@ Page({
     let that = this;
     // 将 video 组件绑定到 theVideo 组件上
     that.theVideo = wx.createVideoContext("myVideo", that);
+
+    let videoItem = JSON.parse(options.videoItem);
+    let mode = "cover";
+    let videoWidth = videoItem.videoWidth;
+    let videoHeight = videoItem.videoHeight;
+    // 如果是横线视频，则objectFit为 contain
+    if(videoWidth > videoHeight){
+      mode = "contain";
+    }
+
+    that.setData({
+      videoItem: videoItem,
+      src: videoItem.videoPath,
+      mode: mode
+    })
   },
 
   /**

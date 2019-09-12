@@ -55,6 +55,9 @@ Page({
 
   },
 
+  /**
+   * 视频描述模糊分页搜索
+   */
   getVideoListBySearch: function(){
     let that = this;
     myUtils.showLoading();
@@ -88,6 +91,9 @@ Page({
     })
   },
 
+/**
+ * 分页搜索
+ */
   getVideoListByPage: function(){
     let that = this;
     myUtils.showLoading();
@@ -116,34 +122,6 @@ Page({
         })
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
   },
 
   /**
@@ -193,10 +171,15 @@ Page({
     
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  showVideoInfo: function(e){
+    let that = this;
+    let videoList = that.data.videoList;
+    let index = e.target.dataset.arrindex;
+    // 页面传参需要将 obj 转为 str
+    let videoItem = JSON.stringify(videoList[index]);
+    console.log(videoItem);
+    wx.navigateTo({
+      url: '../videoInfo/videoInfo' + "?videoItem=" + videoItem
+    })
   }
 })

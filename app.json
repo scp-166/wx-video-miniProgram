@@ -1,10 +1,8 @@
 {
   "pages": [
-
-  
-    "pages/videoInfo/videoInfo",
-    "pages/searchVideo/searchVideo",
     "pages/index/index",
+    "pages/videoInfo/videoInfo",
+    "pages/searchVideo/searchVideo",  
     "pages/mine/mine",
     "pages/userLogin/login",
     "pages/userRegist/regist",

@@ -2,14 +2,14 @@
 
 <video
 id="myVideo"
-src="http://127.0.0.1:8080/5a0800137d164972bf402e7cc035ae55/processVideo/5af971e092364655b6494087fb5af075.mp4"
+src="{{serverUrl}}{{src}}"
 muted="{{false}}"
 autoplay="{{true}}"
-objectFit="contain"
+objectFit="{{mode}}"
 >
 <cover-view id="outer">
   <cover-view id="header">
-    <cover-image id="camera" src="../resource/images/camera.png" ></cover-image>
+    <cover-image id="camera" src="../resource/images/camera.png" bindtap="uploadVideo" ></cover-image>
     <cover-image id="search" src="../resource/images/search.png" bindtap="showSearch"></cover-image>
   </cover-view>
   <cover-view id="middle">
@@ -19,7 +19,7 @@ objectFit="contain"
       <cover-image id="share" src="../resource/images/share.png"></cover-image>
   </cover-view>
   <cover-view id="footer">
-  <cover-image id="index" src="../resource/images/index.png"></cover-image>
+  <cover-image id="index" src="../resource/images/index.png" bindtap="showIndex"></cover-image>
   <cover-image id="follow" src="../resource/images/follow.png"></cover-image>
   <cover-image id="mine" src="../resource/images/mine.png"></cover-image>
   </cover-view>

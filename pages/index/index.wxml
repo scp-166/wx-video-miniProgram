@@ -1,14 +1,14 @@
-<view wx:for="{{videoList}}" class="item-container" wx:key="{{index}}">   
-     <view style='width:{{screenWidth}}px;height:210px;' class='back-img' > 
-        <image src="{{serverUrl}}{{item.coverPath}}" style='width:{{screenWidth}}px;height:210px;' mode="aspectFit" bindtap='showVideoInfo' data-arrindex='{{index}}'></image>
-     </view> 
+<view wx:for="{{videoList}}" class="item-container" wx:key="{{index}}">
+  <view style='width:{{screenWidth}}px;height:210px;' class='back-img'>
+    <image src="{{serverUrl}}{{item.coverPath}}" style='width:{{screenWidth}}px;height:210px;' mode="aspectFit" bindtap='showVideoInfo' data-arrindex='{{index}}' data-aaa="1"></image>
+  </view>
 
-    <view class="authorInfo">
-        <view class="authorInner">
-            <image class='authorFace' src="{{serverUrl}}{{item.faceImage}}"></image>
-            <view class="authorName">lee</view>
-        </view>
+  <view class="authorInfo">
+    <view class="authorInner">
+      <image class='authorFace' src="{{serverUrl}}{{item.faceImage}}"></image>
+      <view class="authorName">lee</view>
     </view>
-    <view>
-    </view>
-  </view>  
+  </view>
+  <view>
+  </view>
+</view>
