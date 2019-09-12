@@ -24,5 +24,12 @@ App({
   getAllVideoByPage: "/video/showVideo",
   
   // 用户信息
-  userInfo: null
+  // userInfo: null,
+
+  setGlobalUserInfo: function(userInfo){
+    wx.setStorageSync("userInfo", userInfo);
+  },
+  getGlobalUserInfo: function(){
+    return wx.getStorageSync("userInfo");
+  }
 })

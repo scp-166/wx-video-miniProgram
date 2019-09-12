@@ -58,7 +58,11 @@ Page({
     let videoWidth = that.data.videoInfo.videoWidth;
     let videoHeight = that.data.videoInfo.videoHeight;
     let tempFilePath = that.data.videoInfo.tempFilePath;
+    // 手机端无法获得视频缩略图
     let thumbTempFilePath = that.data.videoInfo.thumbTempFilePath;
+
+    // 获取缓冲中的UserInfo
+    let userInfo = app.getGlobalUserInfo();
 
     myUtils.showLoading();
     // 发送图片
@@ -68,7 +72,7 @@ Page({
       filePath: tempFilePath,
       name: 'file', // 后端接受 file 的参数
       formData: {
-        userId: app.userInfo.id,
+        userId: userInfo.id,
 
         audioId: audioId,
         videoDesc: videoDesc,
@@ -90,7 +94,7 @@ Page({
             filePath: thumbTempFilePath,
             name: 'file',
             formData:{
-              userId: app.userInfo.id,
+              userId: userInfo.id,
               videoId: videoId
             },
             success: function(ret){

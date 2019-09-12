@@ -38,7 +38,7 @@ doLogin: function(e){
         if(status == 200){
           myUtils.showSuccessToast("登录成功");
           // 保存后端返回的用户信息
-          app.userInfo = e.data.data;
+          app.setGlobalUserInfo(e.data.data);
           // 跳转 个人信息页
           wx.navigateTo({
             url: '../mine/mine',

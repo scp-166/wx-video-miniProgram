@@ -17,7 +17,8 @@ Page({
   onLoad: function(ret){
     let that = this;
 
-    let userInfo = app.userInfo;
+    let userInfo = app.getGlobalUserInfo();
+    console.log(userInfo);
     if(userInfo == null){
       myUtils.showNoneToast("请先登录!");
       setTimeout(function(){
@@ -28,7 +29,6 @@ Page({
           complete: function (res) { },
         });
       }, 1000)
-      console.log("请先登录");
       return;
     }
     // 获取数据
@@ -63,19 +63,20 @@ Page({
   logout: function(){
     // 显示等待
     myUtils.showLoading("请等待");
-    if(app.userInfo == null){
+    if(app.getGlobaluserInfo == null){
       wx.navigateTo({
         url: '../userLogin/login',
       })
       return;
     }
-    console.log(app.userInfo);
+
+    let userInfo = app.getGlobalUserInfo();
 
     wx.request({
       url: app.getTestRemoteUrlWithPort(app.logoutUrl),
       method: "POST",
       data: {
-        "userId": app.userInfo.id
+        "userId": userInfo.id
       },
       header: {
         "content-Type": "application/x-www-form-urlencoded" // 表单格式
@@ -89,7 +90,7 @@ Page({
         if (status == 200) {
           myUtils.showSuccessToast("注销成功");
           // 清空用户信息
-          app.userInfo = null;
+          wx.removeStorageSync("userInfo");
           wx.navigateTo({
             url: '../userLogin/login',
             success: function(res) {},
@@ -132,7 +133,7 @@ Page({
           // 对应后端文件参数名
           name: 'file',
           formData:{
-            "userId": app.userInfo.id
+            "userId": app.getGlobalUserInfo().id
           },
           success: function(ret){
             myUtils.hideLoading();
