@@ -1,8 +1,9 @@
 <!--pages/videoInfo/videoInfo.wxml-->
 
 <video
+id="myVideo"
 src="http://127.0.0.1:8080/5a0800137d164972bf402e7cc035ae55/processVideo/5af971e092364655b6494087fb5af075.mp4"
-muted="{{true}}"
+muted="{{false}}"
 autoplay="{{true}}"
 objectFit="contain"
 >
