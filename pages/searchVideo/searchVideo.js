@@ -1,5 +1,8 @@
 // pages/searchVideo/searchVideo.js
 var WxSearch = require('../../utils/wxSearchView/wxSearchView.js');
+var myUtils = require('../../utils/myUtils.js');
+var app = getApp();
+
 Page({
 
   /**
@@ -16,13 +19,20 @@ Page({
   onLoad: function (options) {
     // 2 搜索栏初始化
     var that = this;
-    WxSearch.init(
-      that,  // 本页面一个引用
-      ['java', 'php', 'c', 'python'], // 热点搜索推荐，[]表示不使用
-      [],// 搜索匹配，[]表示不使用
-      that.mySearchFunction, // 提供一个搜索回调函数
-      that.myGobackFunction //提供一个返回回调函数
-    );
+    wx.request({
+      url: app.getTestRemoteUrlWithPort(app.hotWordsUrl),
+      method: "GET",
+      success: function(ret){
+        let hotWordList = ret.data.data;
+        WxSearch.init(
+          that,  // 本页面一个引用
+          hotWordList, // 热点搜索推荐，[]表示不使用
+          hotWordList,// 搜索匹配，[]表示不使用
+          that.mySearchFunction, // 提供一个搜索回调函数
+          that.myGobackFunction //提供一个返回回调函数
+        );
+      }
+    })
   },
 
   // 3 转发函数，固定部分，直接拷贝即可
@@ -34,19 +44,20 @@ Page({
 
   // 4 搜索回调函数  
   mySearchFunction: function (value) {
-    // do your job here
-    // 示例：跳转
+    console.log("搜索");
     wx.redirectTo({
-      url: '../index/index?searchValue=' + value
+      url: '../../pages/index/index?searchContent=' + value
     })
   },
 
   // 5 返回回调函数
+  // 点击 返回 触发(返回2字也可以修改)
   myGobackFunction: function () {
     // do your job here
     // 示例：返回
-    wx.redirectTo({
-      url: '../index/index?searchValue=返回'
+    console.log('返回');
+    wx.navigateBack({
+      delta: 1,
     })
   },
 

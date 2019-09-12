@@ -13,7 +13,12 @@ Page({
     totalPages: 1,
 
     serverUrl: app.getTestUrl(),
-    videoList: []
+    videoList: [],
+
+    // 查询内容
+    searchContent: "",
+    // 查询接口切换标识
+    useSeachFlag: false
 
   },
 
@@ -22,28 +27,77 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    // 获得手机宽度
     let screenWidth = wx.getSystemInfoSync().screenWidth;
-    console.log(screenWidth);
+    
     that.setData({
       screenWidth: screenWidth
     })
 
-    that.getVideoListByPage();
+    // 搜索栏进来的话则全部变量初始化
+    if(options.searchContent != null){
+      that.setData({
+        currentPage: 1,
+        totalPages: 1,
+        searchContent: options.searchContent,
+        useSeachFlag: true,
+        videoList: []
+      })
+    }
+
+    if (!that.data.useSeachFlag){
+      that.getVideoListByPage();
+    } else {
+      that.getVideoListBySearch();
+    }
+
+    
 
   },
 
-  getVideoListByPage: function(){
+  getVideoListBySearch: function(){
     let that = this;
     myUtils.showLoading();
     wx.request({
-      url: app.getTestRemoteUrlWithPort(app.getAllVideoByPage) + "?pageNum=" + that.data.currentPage,
+      url: app.getTestRemoteUrlWithPort(app.getVideoByHotTipsUrl) + "?pageNum=" + that.data.currentPage,
+      data: {
+        videoDesc: that.data.searchContent
+      },
       method: "POST",
       success: function (ret) {
         myUtils.hideLoading();
         wx.hideNavigationBarLoading();
         wx.stopPullDownRefresh();
 
-        console.log(ret.data);
+        // 清空所有数据，避免后续上拉下拉出现问题
+        if (that.data.currentPage === 1) {
+          that.setData({
+            videoList: []
+          })
+        }
+        let oldVideoList = that.data.videoList;
+        let newVideoList = ret.data.data.rows;
+        // 设置初始化的分页
+        that.setData({
+          // 拼接新老 videoList
+          videoList: oldVideoList.concat(newVideoList),
+          currentPage: ret.data.data.currentPage,
+          totalPages: ret.data.data.totalPages
+        })
+      }
+    })
+  },
+
+  getVideoListByPage: function(){
+    let that = this;
+    myUtils.showLoading();
+    wx.request({
+      url: app.getTestRemoteUrlWithPort(app.getAllVideoByPageUrl) + "?pageNum=" + that.data.currentPage,
+      method: "POST",
+      success: function (ret) {
+        myUtils.hideLoading();
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
 
         // 清空所有数据，避免后续上拉下拉出现问题
         if (that.data.currentPage === 1) {
@@ -101,14 +155,21 @@ Page({
 
     // 判断是否还能加载
     if (this.data.currentPage === this.data.totalPages) {
+      wx.hideNavigationBarLoading();
+      wx.onpull
       myUtils.showNoneToast("没有更多的视频啦");
       return;
     }
 
     // 初始化首页
     this.data.currentPage = 1;
+    // this.data.currentPage++;
 
-    that.getVideoListByPage();
+    if(!that.data.useSeachFlag){
+      that.getVideoListByPage();
+    } else {
+      that.getVideoListBySearch();
+    }
   },
 
   /**
@@ -124,8 +185,11 @@ Page({
     }
 
     this.data.currentPage++;
-
-    that.getVideoListByPage();
+    if(!that.data.useSeachFlag){
+      that.getVideoListByPage();
+    } else {
+      that.getVideoListBySearch();
+    }
     
   },
 
