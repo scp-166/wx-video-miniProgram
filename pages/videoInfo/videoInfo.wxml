@@ -21,7 +21,7 @@ objectFit="{{mode}}"
   <cover-view id="footer">
   <cover-image id="index" src="../resource/images/index.png" bindtap="showIndex"></cover-image>
   <cover-image id="follow" src="../resource/images/follow.png"></cover-image>
-  <cover-image id="mine" src="../resource/images/mine.png"></cover-image>
+  <cover-image id="mine" src="../resource/images/mine.png" bindtap="showMe"></cover-image>
   </cover-view>
 </cover-view>
 

@@ -40,6 +40,15 @@ Page({
   },
 
   /**
+   * 跳转个人信息页
+   */
+  showMe: function(){
+    wx.navigateTo({
+      url: '../mine/mine',
+    })
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {

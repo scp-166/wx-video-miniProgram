@@ -19,24 +19,31 @@ Page({
     let that = this;
 
     let userInfo = app.getGlobalUserInfo();
-    console.log(userInfo);
+
     if(userInfo == null){
-      myUtils.showNoneToast("请先登录!");
-      setTimeout(function(){
+      myUtils.showNoneToastWithSuccessCallback("请先登录", function () {
         wx.redirectTo({
           url: '../userLogin/login',
-          success: function (res) { },
-          fail: function (res) { },
-          complete: function (res) { },
-        });
-      }, 1000)
+        })
+      })
       return;
     }
     // 获取数据
     wx.request({
       url: app.getTestRemoteUrlWithPort(app.userInfoUrl) + "?userId=" + userInfo.id,
+      header: {
+        "userId": userInfo.id,
+        "userToken": userInfo.uuidToken
+      },
       method: "GET",
       success: function(ret){
+        if (ret.statusCode === 400) {
+          myUtils.showNoneToastWithSuccessCallback(ret.data.msg, function () {
+            wx.navigateTo({
+              url: '../userLogin/login',
+            })
+          })
+        }
         if(ret.data.status == 200){
           myUtils.showSuccessToast("获取信息成功");
           let data = ret.data.data;
@@ -56,6 +63,7 @@ Page({
         }
       },
       fail: function(err){
+        myUtils.showNoneToast("加载用户数据出现异常");
         console.log(err);
       }
     })
@@ -64,13 +72,13 @@ Page({
   logout: function(){
     // 显示等待
     myUtils.showLoading("请等待");
-    if(app.getGlobaluserInfo == null){
+
+    if (app.getGlobalUserInfo() == null){
       wx.navigateTo({
         url: '../userLogin/login',
       })
       return;
     }
-
     let userInfo = app.getGlobalUserInfo();
 
     wx.request({
@@ -80,7 +88,7 @@ Page({
         "userId": userInfo.id
       },
       header: {
-        "content-Type": "application/x-www-form-urlencoded" // 表单格式
+        "content-Type": "application/x-www-form-urlencoded", // 表单格式
       },
       success: function (e) {
         // 隐藏 loading
@@ -89,27 +97,24 @@ Page({
         let status = e.data.status;
 
         if (status == 200) {
-          myUtils.showSuccessToast("注销成功");
-          // 清空用户信息
-          wx.removeStorageSync("userInfo");
-          wx.navigateTo({
-            url: '../userLogin/login',
-            success: function(res) {},
-            fail: function(res) {},
-            complete: function(res) {},
-          })
-
+          myUtils.showSuccessToastWithSuccessCallback("注销成功", function(){
+            // 清空用户信息
+            app.removeGlobalUserInfo();
+            // 跳转登录页面
+            wx.navigateTo({
+              url: '../userLogin/login',
+            })
+          });
+          
         } else {
           myUtils.showNoneToast(e.data.msg);
         }
-
       },
 
       fail: function (err) {
         // 隐藏 loading
         myUtils.hideLoading();
-
-        console.log("失败");
+        myUtils.showNoneToast("注销出现异常");
         console.log(err);
       }
     })
@@ -117,6 +122,9 @@ Page({
 
   changeFace: function(e){
     let that = this;
+
+    let userInfo = app.getGlobalUserInfo();
+
     // https://developers.weixin.qq.com/miniprogram/dev/api/media/image/wx.chooseImage.html
     wx.chooseImage({
       count: 1,
@@ -136,12 +144,24 @@ Page({
           formData:{
             "userId": app.getGlobalUserInfo().id
           },
+          header: {
+            "userId": userInfo.id,
+            "userToken": userInfo.uuidToken
+          },
           success: function(ret){
             myUtils.hideLoading();
             // 和 wx.request 不同，wx.uploadFile 的 ret.data 是 String 而不是 Object
-            
             let data = JSON.parse(ret.data);
-            console.log(data);
+
+            if (ret.statusCode === 400) {
+              myUtils.showNoneToastWithSuccessCallback(data.msg, function(){
+                wx.navigateTo({
+                  url: '../userLogin/login',
+                })
+              })
+              return;
+            }
+          
             if(data.status == 200){
               myUtils.showSuccessToast("上传成功");
             
@@ -154,6 +174,7 @@ Page({
             }
           },
           fail: function(error){
+            myUtils.showNoneToast("上传视频出现问题")
             console.log(error);
           }
         })

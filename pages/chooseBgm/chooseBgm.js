@@ -17,7 +17,7 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    // 将上个页面传来的 video 信息存储
+    // 将上个页面(VideoUtils)传来的 video 信息存储
     that.setData({
       videoInfo: options
     })
@@ -64,6 +64,14 @@ Page({
     // 获取缓冲中的UserInfo
     let userInfo = app.getGlobalUserInfo();
 
+    if(userInfo == null){
+      myUtils.showNoneToastWithSuccessCallback("请登录", function(){
+        wx.navigateTo({
+          url: '../userLogin/login',
+        })
+      })
+    }
+
     myUtils.showLoading();
     // 发送图片
     wx.uploadFile({
@@ -82,8 +90,20 @@ Page({
         videoHeight: videoHeight
 
       },
+      header: {
+        "userId": userInfo.id,
+        "userToken": userInfo.uuidToken
+      },
       success: function(ret){
         let data = JSON.parse(ret.data);
+        if(ret.statusCode === 400){
+          myUtils.showNoneToastWithSuccessCallback(data.msg, function(){
+            wx.navigateTo({
+              url: '../userLogin/login',
+            })
+          });
+          return;
+        }
         if(data.status == 200){
           /*
           // 手机端无法获取缩略图，服务端进行存储

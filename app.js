@@ -13,9 +13,9 @@ App({
     return this.getTestUrl() + targetUrl;
   },
 
-  registerUrl: "/register",
-  loginUrl: "/login",
-  logoutUrl: "/logout",
+  registerUrl: "/user/register",
+  loginUrl: "/user/login",
+  logoutUrl: "/user/logout",
   uploadFaceUrl: "/operation/uploadFace",
   userInfoUrl: "/operation/userInfo",
   bgmListUrl: "/bgm/bgmList",
@@ -33,5 +33,8 @@ App({
   },
   getGlobalUserInfo: function(){
     return wx.getStorageSync("userInfo");
+  },
+  removeGlobalUserInfo: function(){
+    wx.removeStorageSync("userInfo");
   }
 })

@@ -30,6 +30,7 @@ doLogin: function(e){
         "content-Type": "application/json" // 这是默认的
       },
       success: function(e){
+        console.log(e);
         // 隐藏 loading
         myUtils.hideLoading();
 
@@ -55,8 +56,7 @@ doLogin: function(e){
       fail: function(err){
         // 隐藏 loading
         myUtils.hideLoading();
-
-        console.log("失败");
+        myUtils.showNoneToast("登录出现问题")
         console.log(err);
       }
     })
