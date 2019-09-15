@@ -18,12 +18,16 @@ App({
   logoutUrl: "/user/logout",
   uploadFaceUrl: "/operation/uploadFace",
   userInfoUrl: "/operation/userInfo",
+  publisherInfoUrl: "/operation/publisherInfo",
   bgmListUrl: "/bgm/bgmList",
   uploadVideoUrl: "/video/uploadVideo",
   uploadVideoCoverUrl: "/video/uploadVideoCover",
   getAllVideoByPageUrl: "/video/showVideo",
   getVideoByHotTipsUrl: "/video/showVideoByHotTips",
   hotWordsUrl: "/video/hotWords",
+  likeVideoUrl: "/video/likeVideo",
+  unlikeVideoUrl: "/video/unlikeVideo",
+  isLikeVideoUrl: "/video/isLikeVideo",
   
   // 用户信息
   // userInfo: null,

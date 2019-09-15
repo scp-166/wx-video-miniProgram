@@ -15,28 +15,45 @@ Page({
 /**
  * 先加载用户信息
  */
-  onLoad: function(ret){
+  onLoad: function(params){
     let that = this;
 
-    let userInfo = app.getGlobalUserInfo();
+    let userInfo;
+    let url;
+    // 如果是从 videoInfo 页面点击发布者信息传递过来
+    if (params.publisherInfo != null){
+      userInfo = JSON.parse(params.publisherInfo);
+      url = app.getTestRemoteUrlWithPort(app.publisherInfoUrl);
+    } else {
+      // 正常是当前用户的信息
+      userInfo = app.getGlobalUserInfo();
+      url = app.getTestRemoteUrlWithPort(app.userInfoUrl);
 
-    if(userInfo == null){
-      myUtils.showNoneToastWithSuccessCallback("请先登录", function () {
-        wx.redirectTo({
-          url: '../userLogin/login',
+      if (userInfo == null) {
+        myUtils.showNoneToastWithSuccessCallback("请先登录", function () {
+          wx.redirectTo({
+            url: '../userLogin/login',
+          })
         })
-      })
-      return;
+        return;
+      }
     }
+    console.log(userInfo);
+    console.log(userInfo.id)
     // 获取数据
     wx.request({
-      url: app.getTestRemoteUrlWithPort(app.userInfoUrl) + "?userId=" + userInfo.id,
+      url: url,
+      data:{
+        "userId": userInfo.id
+      },
       header: {
+        "Content-Type": "application/x-www-form-urlencoded",
         "userId": userInfo.id,
         "userToken": userInfo.uuidToken
       },
-      method: "GET",
+      method: "POST",
       success: function(ret){
+        console.log(ret);
         if (ret.statusCode === 400) {
           myUtils.showNoneToastWithSuccessCallback(ret.data.msg, function () {
             wx.navigateTo({

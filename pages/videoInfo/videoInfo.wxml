@@ -13,8 +13,13 @@ objectFit="{{mode}}"
     <cover-image id="search" src="../resource/images/search.png" bindtap="showSearch"></cover-image>
   </cover-view>
   <cover-view id="middle">
-      <cover-image id="authorFace"></cover-image>
-      <cover-image id="unlike" src="../resource/images/unlike.png"></cover-image>
+      <cover-image id="authorFace" src="{{serverUrl}}{{publisherInfo.faceImage}}" bindtap="showPublisherInfo"></cover-image>
+      <block wx:if="{{likeVideoFlag}}">
+        <cover-image id="unlike" src="../resource/images/like.png" bindtap="likeVideoOrNot"></cover-image>
+      </block>
+      <block wx:else>
+        <cover-image id="unlike" src="../resource/images/unlike.png" bindtap="likeVideoOrNot"></cover-image>
+      </block>
       <cover-image id="comments" src="../resource/images/comments.png"></cover-image>
       <cover-image id="share" src="../resource/images/share.png"></cover-image>
   </cover-view>
