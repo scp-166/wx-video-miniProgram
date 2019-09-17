@@ -5,10 +5,23 @@ const app = getApp()
 
 Page({
     data: {
+      returnPageNum: "0"
 
     },
 
+onLoad: function(params){
+  let that = this;
+  // 如果上个页面有传递 要求返回页面参数，则保存该参数
+  if (params.returnPageNum != null){
+    that.setData({
+      returnPageNum: params.returnPageNum
+    })
+  }
+  console.log("返回页面要求: " + that.data.returnPageNum);
+},
+
 doLogin: function(e){
+  let that = this;
   // form 表单提交的内容都在 value 中
   console.log(e.detail.value);
   let value = e.detail.value;
@@ -30,7 +43,7 @@ doLogin: function(e){
         "content-Type": "application/json" // 这是默认的
       },
       success: function(e){
-        console.log(e);
+
         // 隐藏 loading
         myUtils.hideLoading();
 
@@ -40,13 +53,20 @@ doLogin: function(e){
           myUtils.showSuccessToast("登录成功");
           // 保存后端返回的用户信息
           app.setGlobalUserInfo(e.data.data);
-          // 跳转 个人信息页
-          wx.navigateTo({
-            url: '../mine/mine',
-            success: function(res) {},
-            fail: function(res) {},
-            complete: function(res) {},
-          })
+          // 如果有返回页面要求，则返回
+          if (that.data.returnPageNum != 0 || that.data.returnPageNum != "0"){
+            wx.navigateBack({
+              delta: that.data.returnPageNum,
+            })
+          } else {
+            // 跳转 个人信息页
+            wx.navigateTo({
+              url: '../mine/mine',
+              success: function(res) {},
+              fail: function(res) {},
+              complete: function(res) {},
+            })
+          }
         } else {
           myUtils.showNoneToast(e.data.msg);
         }

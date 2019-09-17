@@ -20,12 +20,13 @@ objectFit="{{mode}}"
       <block wx:else>
         <cover-image id="unlike" src="../resource/images/unlike.png" bindtap="likeVideoOrNot"></cover-image>
       </block>
-      <cover-image id="comments" src="../resource/images/comments.png"></cover-image>
-      <cover-image id="share" src="../resource/images/share.png"></cover-image>
+      <cover-image id="comments" src="../resource/images/comments.png" bindtap="startComment"></cover-image>
+      <cover-image id="share" src="../resource/images/share.png" bindtap="shareMe"></cover-image>
   </cover-view>
   <cover-view id="footer">
   <cover-image id="index" src="../resource/images/index.png" bindtap="showIndex"></cover-image>
-  <cover-image id="follow" src="../resource/images/follow.png"></cover-image>
+  <!-- 暂时取消该功能 -->
+  <!-- <cover-image id="follow" src="../resource/images/follow.png"></cover-image> -->
   <cover-image id="mine" src="../resource/images/mine.png" bindtap="showMe"></cover-image>
   </cover-view>
 </cover-view>

@@ -1,9 +1,11 @@
 //app.js
 App({
   // 测试地址url
-  testRemoteUrl: "http://127.0.0.1",
+  // testRemoteUrl: "http://127.0.0.1",
+  testRemoteUrl: "http://590420ec.ngrok.io",
   // 测试地址端口
-  testRemotePort: "8080",
+  // testRemotePort: "8080",
+  testRemotePort: "80",
   // 地址 + 端口
   getTestUrl : function(){
     return (this.testRemoteUrl + ":" + this.testRemotePort);
@@ -29,6 +31,7 @@ App({
   unlikeVideoUrl: "/video/unlikeVideo",
   isLikeVideoUrl: "/video/isLikeVideo",
   
+  
   // 用户信息
   // userInfo: null,
 
@@ -40,5 +43,15 @@ App({
   },
   removeGlobalUserInfo: function(){
     wx.removeStorageSync("userInfo");
-  }
+  },
+
+  // 操作菜单值
+  getWhatYouDoNow:[
+    "举报",
+    "下载",
+    "分享给好友",
+    "分享到朋友圈",
+    "分享到QQ空间",
+    "分享到微博"
+  ]
 })

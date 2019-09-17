@@ -9,7 +9,12 @@ Page({
     nickname: "",
     fansCounts: 0,
     followCounts: 0,
-    receiveLikeCounts: 0
+    receiveLikeCounts: 0,
+    isMe: false,
+
+    publisherInfo:{},
+
+    returnPageNum: "0"
   },
 
 /**
@@ -21,25 +26,42 @@ Page({
     let userInfo;
     let url;
     // 如果是从 videoInfo 页面点击发布者信息传递过来
-    if (params.publisherInfo != null){
+    if (params != null && params.publisherInfo != null){
       userInfo = JSON.parse(params.publisherInfo);
       url = app.getTestRemoteUrlWithPort(app.publisherInfoUrl);
+      
+      let cacheUserInfo = app.getGlobalUserInfo();
+      if(cacheUserInfo.id == userInfo.id){
+        this.setData({
+          isMe: true,
+          publisherInfo: userInfo
+        })
+      } else {
+        this.setData({
+          isMe: false,
+          publisherInfo: userInfo
+        })
+      }
+      
     } else {
       // 正常是当前用户的信息
       userInfo = app.getGlobalUserInfo();
       url = app.getTestRemoteUrlWithPort(app.userInfoUrl);
 
+      this.setData({
+        isMe: true
+      })
+
       if (userInfo == null) {
         myUtils.showNoneToastWithSuccessCallback("请先登录", function () {
-          wx.redirectTo({
+          wx.navigateTo({
             url: '../userLogin/login',
           })
         })
         return;
       }
     }
-    console.log(userInfo);
-    console.log(userInfo.id)
+
     // 获取数据
     wx.request({
       url: url,
@@ -57,19 +79,21 @@ Page({
         if (ret.statusCode === 400) {
           myUtils.showNoneToastWithSuccessCallback(ret.data.msg, function () {
             wx.navigateTo({
-              url: '../userLogin/login',
+              url: '../userLogin/login' + "?returnPageNum=" + "1",
             })
           })
+          return;
         }
         if(ret.data.status == 200){
           myUtils.showSuccessToast("获取信息成功");
           let data = ret.data.data;
           let faceImage = "../resource/images/noneface.png";
+          console.log(data);
 
           if(data.faceImage != null && data.faceImage != "" && data.faceImage != undefined)          {
             faceImage = app.getTestUrl() + data.faceImage;
           }
-
+          // 準備加載數據
           that.setData({
             faceUrl: faceImage,
             nickname: data.nickname,

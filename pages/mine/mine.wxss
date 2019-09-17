@@ -76,3 +76,7 @@ page {
     width: 250rpx;
     height: 180px;
 }
+
+.like{
+  margin-top: 10rpx;
+}

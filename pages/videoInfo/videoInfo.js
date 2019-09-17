@@ -50,7 +50,7 @@ Page({
    */
   showMe: function(){
     wx.navigateTo({
-      url: '../mine/mine',
+      url: '../mine/mine' + "?returnPageNum=" + "2",
     })
   },
 
@@ -172,7 +172,8 @@ Page({
         if(ret.statusCode === 400){
           myUtils.showNoneToastWithSuccessCallback("请登录", function(){
             wx.navigateTo({
-              url: '../userLogin/login',
+              // 跳转登陆，并且传递要返回的页面数
+              url: '../userLogin/login' + "?returnPageNum=" + "1",
             })
           });
           return;
@@ -203,6 +204,63 @@ Page({
     wx.navigateTo({
       url: '../mine/mine' + "?publisherInfo=" + JSON.stringify(that.data.publisherInfo),
     })
+  },
+
+  /**
+   * 评论功能
+   */
+  startComment: function(){
+    myUtils.showNoneToast("暂未提供该功能");
+  },
+  
+  /**
+   * 分享页面
+   */
+  shareMe: function(){
+    let that = this;
+    // 显示操作菜单
+    // https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showActionSheet.html
+    wx.showActionSheet({
+      itemList: app.getWhatYouDoNow,
+      success: function(ret){
+        switch(ret.tapIndex){
+          case 0:
+          console.log("举报");
+            break;
+          case 1:
+            console.log("下载")
+            // 下载图片，获得本地临时路径，最大 50mb
+            // https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html
+            myUtils.showLoading();
+            wx.downloadFile({
+              url: app.getTestUrl() + that.data.videoItem.videoPath,
+              success: function(ret){
+                myUtils.showSuccessToast("下载视频成功")
+                // 存放到手机上
+                // https://developers.weixin.qq.com/miniprogram/dev/api/media/video/wx.saveVideoToPhotosAlbum.html
+                let tempFilePath = ret.tempFilePath;
+                wx.saveVideoToPhotosAlbum({
+                  filePath: tempFilePath,
+                  success: function(ret){
+                    myUtils.hideLoading();
+                    myUtils.showNoneToast("导入相册成功");
+                  }
+                })
+
+              }
+            })
+            break;
+          case 2:
+            myUtils.showNoneToast("这玩意要用个 share 的 button 才能用哦")
+            break;
+          default:
+            myUtils.showNoneToast("小程序未支持");
+            break;
+        }
+      }
+    })
+
+    
   },
 
   /**
@@ -251,8 +309,19 @@ Page({
 
   /**
    * 用户点击右上角分享
+   * https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareAppMessage-Object-object
    */
-  onShareAppMessage: function() {
-
+  onShareAppMessage: function(ret) {
+    let that = this;
+    // 注意 ret.from == button，即要求有一个 <button open-type="share"></button> 
+    return {
+      title: "分享一个测试视频",
+      path: "pages/videoInfo/videoInfo" + "?videoInfo=" + JSON.stringify(that.data.videoItem),
+      // imageUrl
+      success: function(ret){
+        console.log("success")
+      }
+      // fail complete
+    }
   }
 })

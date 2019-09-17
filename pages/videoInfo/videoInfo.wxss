@@ -46,6 +46,7 @@ video{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   padding-bottom: 50rpx;
   padding-top: 50rpx;
   padding-left: 50rpx;
